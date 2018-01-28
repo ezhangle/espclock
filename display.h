@@ -6,6 +6,7 @@
 #define CLK  0 //laranja
 
 void displayinit(void);
+void displayrefresh(void);
 void displayWrite(uint8_t hours, uint8_t minutes);
 
 #endif 

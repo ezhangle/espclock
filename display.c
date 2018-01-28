@@ -1,8 +1,6 @@
 #include<stdint.h>
 #include<Arduino.h>
 
-
-
 #include "display.h"
 
 #define max7219_reg_noop        0x00
@@ -64,24 +62,27 @@ void displayinit(void) {
   maxWrite(max7219_reg_intensity, 0x0f);
 
   //displayWrite(0,0);
-  maxWrite(max7219_reg_digit0, 0);
-  maxWrite(max7219_reg_digit1, 1);
-  maxWrite(max7219_reg_digit2, 2);
-  maxWrite(max7219_reg_digit3, 3);
 
+}
+void displayrefresh(void){
+  maxWrite(max7219_reg_scanLimit, 0x03);
+  maxWrite(max7219_reg_decodeMode, 0x0F);
+  maxWrite(max7219_reg_shutdown, 0x01);
+  maxWrite(max7219_reg_displayTest, 0x00);
+  maxWrite(max7219_reg_intensity, 0x0f);
 }
 
 void displayWrite(uint8_t hours, uint8_t minutes) {
   uint8_t timeA[4];
   //minutes
   timeA[1] = minutes / 10;  //digit for sets of ten
-  maxWrite(max7219_reg_digit1, timeA[1]&0x0F);
+  maxWrite(max7219_reg_digit1, (timeA[1]&0x0F)|0x80);
   timeA[0] = minutes - timeA[1] * 10; //digit for set of ones
   maxWrite(max7219_reg_digit0, timeA[0]&0x0F);
 
   //hours
   timeA[3] = hours / 10;  //digit for sets of ten
-  maxWrite(max7219_reg_digit3, timeA[3]);
+  maxWrite(max7219_reg_digit3, timeA[3]&0x0F);
   timeA[2] = hours - timeA[3] * 10; //digit for set of ones
-  maxWrite(max7219_reg_digit2, timeA[2]);
+  maxWrite(max7219_reg_digit2, timeA[2]&0x0F);
 }
