@@ -25,7 +25,7 @@ void setup() {
   timeClient.setTimeOffset(-3 * 3600);//(in seconds), Brazil time is UTC -3:00 
   displayinit();
 
-  //At start up the the ntp library returns garbage, this gives it some time to sync
+  //At start up the the ntp library may return garbage, this gives it some time to sync
   while(millis()<10000){
     //update
     timeClient.update();
