@@ -35,6 +35,15 @@ void setup() {
   timeClient.begin();
   timeClient.setTimeOffset(-3 * 3600);
   displayinit();
+
+  //At start up the the ntp library returns garbage, this gives it sometimes to sync
+  while(millis()<10000){
+    //update
+    timeClient.update();
+    
+    delay(500);
+  }
+  
 }
 
 int hours = 0, minutes = 0;
@@ -44,11 +53,14 @@ void loop() {
   //Serial.println(timeClient.getFormattedTime());
   hours = (byte)timeClient.getHours();
   minutes = (byte)timeClient.getMinutes();
-  //Serial.print("horas ");
-  //Serial.println(hours);
-  //Serial.print("minutos ");
-  //Serial.println(minutes);
+
+  //This refreshes the display settings, not the data
+  //Sometimes the dispaly would hang up and show nothing 
+  //while the esp would continue to run 
+  displayrefresh();
+  //update the display
   displayWrite(hours, minutes);
 
+  //update after one second or so
   delay(1000);
 }
