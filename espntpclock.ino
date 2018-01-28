@@ -1,42 +1,31 @@
+//The ntp portion of this code is based on the example from https://github.com/arduino-libraries/NTPClient
+
 #include <NTPClient.h>
-// change next line to use with another board/shield
 #include <ESP8266WiFi.h>
-//#include <WiFi.h> // for WiFi shield
-//#include <WiFi101.h> // for WiFi 101 shield or MKR1000
 #include <WiFiUdp.h>
 
-
 extern "C"{
-  #include "display.h"
+#include "display.h"
 }
 
 const char *ssid     = "";
 const char *password = "";
 
 WiFiUDP ntpUDP;
-
-// By default 'time.nist.gov' is used with 60 seconds update interval and
-// no offset
 NTPClient timeClient(ntpUDP);
 
-// You can specify the time server pool and the offset, (in seconds)
-// additionaly you can specify the update interval (in milliseconds).
-// NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
-
 void setup() {
-  //Serial.begin(115200);
   WiFi.begin(ssid, password);
 
   while ( WiFi.status() != WL_CONNECTED ) {
     delay ( 500 );
-    //Serial.print ( "." );
   }
 
   timeClient.begin();
-  timeClient.setTimeOffset(-3 * 3600);
+  timeClient.setTimeOffset(-3 * 3600);//(in seconds), Brazil time is UTC -3:00 
   displayinit();
 
-  //At start up the the ntp library returns garbage, this gives it sometimes to sync
+  //At start up the the ntp library returns garbage, this gives it some time to sync
   while(millis()<10000){
     //update
     timeClient.update();
@@ -50,7 +39,6 @@ int hours = 0, minutes = 0;
 void loop() {
   timeClient.update();
 
-  //Serial.println(timeClient.getFormattedTime());
   hours = (byte)timeClient.getHours();
   minutes = (byte)timeClient.getMinutes();
 
