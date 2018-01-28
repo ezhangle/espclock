@@ -1,7 +1,7 @@
 # espclock
 
 This is a clock I built for my mother based on the esp8266.
-This was my first experience with this chip since it was released, unforntunately, as I find it preety useful. 
+This was my first experience with this chip since it was released, unforntunately, as I found it pretty useful. 
 
 The main code is basically a copy and paste of the ntp example of the Arduino library available [here](https://github.com/arduino-libraries/NTPClient)
 
